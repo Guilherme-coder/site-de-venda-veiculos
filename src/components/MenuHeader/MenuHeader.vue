@@ -1,6 +1,6 @@
 <template>
   <div class="menu_header">
-      <h2 class="title_header">Site de Carros</h2>
+      <h2 class="title_header">Site de venda de veículos</h2>
       <div>
           <ul class="items_header">
               <li class="item_header"><router-link class="link_header" to="/">Home</router-link></li>

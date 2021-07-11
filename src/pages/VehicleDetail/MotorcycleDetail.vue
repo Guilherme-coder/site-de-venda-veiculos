@@ -10,15 +10,12 @@
             
             <div class="info">
                 <h3 class="title_description">Descrição:</h3>
-                <p class="description">
-                    Motocicleta nova, rodei pouco com ela, ta só o mamão.
-                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nesciunt quam aliquid accusamus. Cum suscipit quis facilis quos itaque quibusdam repellendus eum ex at! Asperiores non animi, perferendis reprehenderit quos illum?
-                </p>
+                <p class="description">{{ this.motorcycle.description || 'O anunciante não deu descrição da motocicleta :(' }}</p>
                 <h3 class="title_info">Informações Gerais: </h3>
                 <ul class="metrics">
                     <li class="item_metrics">{{ formatCapacity() }}</li>
                     <li class="item_metrics">Ano: {{ this.motorcycle.year }}</li>
-                    <li class="item_metrics">Quilometragem: 100000 km</li>
+                    <li class="item_metrics">Quilometragem: {{ calcMileage() }}</li>
                 </ul>
             </div>
         </div>
@@ -49,6 +46,11 @@ export default {
     methods: {
         formatCapacity(){
             return this.motorcycle.capacity + ' cilindradas'
+        },
+        calcMileage(){
+            if(this.motorcycle.mileage)
+                return `${this.motorcycle.mileage} km`
+            return 'O anunciante não nos contou a quilometragem da motocicleta :('
         }
     }
 

@@ -10,14 +10,12 @@
             
             <div class="info">
                 <h3 class="title_description">Descrição:</h3>
-                <p class="description">
-                    Carro muito conservado, usei com muito carinho.
-                </p>
+                <p class="description">{{ this.car.description || 'O anunciante não deu descrição do carro :(' }}</p>
                 <h3 class="title_info">Informações Gerais: </h3>
                 <ul class="metrics">
                     <li class="item_metrics">{{ formatEngine() }}</li>
                     <li class="item_metrics">Ano: {{ this.car.year }}</li>
-                    <li class="item_metrics">Quilometragem: 100000 km</li>
+                    <li class="item_metrics">Quilometragem: {{ calcMileage() }}</li>
                 </ul>
             </div>
         </div>
@@ -54,6 +52,12 @@ export default {
                 return 'Motor: ' + engineString;
             }
         },
+
+        calcMileage(){
+            if(this.car.mileage)
+                return `${this.car.mileage} km`
+            return 'O anunciante não nos contou a quilometragem do carro :('
+        }
     }
 
 }
