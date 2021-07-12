@@ -9,6 +9,7 @@ import Advertise from './pages/Advertise/Advertise.vue';
 import CarDetail from './pages/VehicleDetail/CarDetail.vue';
 import MotorcycleDetail from './pages/VehicleDetail/MotorcycleDetail.vue';
 import './assets/css/reset.css';
+import './assets/css/overwrite.css';
 
 Vue.config.productionTip = false
 Vue.use(VueRouter)

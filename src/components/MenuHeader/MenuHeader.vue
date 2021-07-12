@@ -1,6 +1,8 @@
 <template>
   <div class="menu_header">
-      <h2 class="title_header">Site de venda de veículos</h2>
+      <router-link class="link_title" to="/">
+        <h2 class="title_header">Site de venda de veículos</h2>
+      </router-link>
       <div>
           <ul class="items_header">
               <li class="item_header"><router-link class="link_header" to="/">Home</router-link></li>
@@ -24,6 +26,13 @@ export default {
         display: flex;
         justify-content: space-between;
         align-items: center;
+    }
+    .link_title{
+        text-decoration: none;
+        color: black;
+    }
+    .link_title:hover{
+        text-decoration: underline;
     }
     .title_header{
         font-size: 2em;

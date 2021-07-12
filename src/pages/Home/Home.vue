@@ -12,10 +12,10 @@
       </div>
       <div class="list_vehicles">
           <select class="switch_vehicles" id="select_vehicels">
-              <option value="car">Carros</option>
+              <option value="cars">Carros</option>
               <option value="motorcycles">Motocicletas</option>
           </select>
-            <ul v-if="typeVehicle === 'car'">
+            <ul v-if="typeVehicle === 'cars'">
                 <card-vehicle v-for="vehicle in cars" :key="vehicle.picture"
                     vehicle="carros"
                     :id="vehicle.id"
