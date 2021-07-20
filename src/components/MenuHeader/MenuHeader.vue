@@ -6,7 +6,10 @@
       <div>
           <ul class="items_header">
               <li class="item_header"><router-link class="link_header" to="/">Home</router-link></li>
-              <li class="item_header"><router-link class="link_header" to="/login">Login</router-link></li>
+              
+              <li v-if="this.email" class="item_header" @click="logOut()">{{ showEmail() }}</li>
+              <li v-else class="item_header"><router-link class="link_header" to="/login">Login</router-link></li>
+              
           </ul>
       </div>
   </div>
@@ -14,7 +17,22 @@
 
 <script>
 export default {
-
+    data() {
+        return{
+            email: localStorage.getItem('email') ? localStorage.getItem('email') : null
+        }
+    },
+    methods: {
+        showEmail() {
+            const indice = this.email.indexOf('@')
+            return this.email.substr(0, indice)
+        },
+        logOut() {
+            localStorage.removeItem('email')
+            this.email = null
+            console.log('você fez logout');
+        }
+    }
 }
 </script>
 
@@ -43,6 +61,7 @@ export default {
         justify-content: space-between;
     }
     .item_header{
+        cursor: pointer;
         list-style: none;
         margin-left: 2.5em;
         font-size: 1.3em;

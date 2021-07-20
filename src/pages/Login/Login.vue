@@ -2,30 +2,35 @@
     <div>
         <header-app/>
         <div class="box">
-            <form class="signin">
+            <form class="signin" @submit.prevent="signin()">
                 <h2 class="title">Entre com suas credenciais</h2>
                 <label class="login_label" for="email_in">Email </label>
-                <input class="login_input" id="email_in" type="text">
+                <input required class="login_input" id="email_in" type="email">
                 
                 <label class="login_label" for="pass_in">Senha </label>
-                <input class="login_input" id="pass_in" type="password">
+                <input required class="login_input" id="pass_in" type="password">
 
-                <button class="login_button">Entre</button>
+                <p class="error_message" v-show="errMessageIn">Os dados estão incorretos, tente novamente.</p>
+
+                <button type="submit" class="login_button">Entre</button>
+
             </form>
 
-            <form class="signup">        
+            <form class="signup" @submit.prevent="signup()">        
                 <h2 class="title">Cadastre-se, é rápido!</h2>        
                 <label class="login_label" for="email_up">Email </label>
-                <input class="login_input" id="email_up" type="text">
+                <input required class="login_input" id="email_up" type="email">
                 
                 <div class="passwords">
                     <label class="login_label" for="pass_up">Crie sua senha </label>
-                    <input class="login_input" id="pass_up" type="text">
+                    <input required class="login_input" id="pass_up" type="password">
                     
                     <label class="login_label" for="pass_up_confirm">Confirme sua senha </label>
-                    <input class="login_input" id="pass_up_confirm" type="text">
+                    <input required class="login_input" id="pass_up_confirm" type="password">
                     
-                    <button class="login_button">Cadastre-se</button>
+                    <p class="error_message" v-show="errMessageUp">{{ errMessageUp }}</p>
+                    
+                    <button type="submit" class="login_button">Cadastre-se</button>
                 </div>
             </form>
         </div>
@@ -37,8 +42,64 @@ import MenuHeader from '../../components/MenuHeader/MenuHeader.vue'
 
 
 export default {
+    data() {
+        return {
+            errMessageIn: false,
+            errMessageUp: '',
+            emailExists: ''
+        }
+    },
     components: {
         "header-app": MenuHeader
+    },
+    methods: {
+        signin() {
+            const email = document.getElementById('email_in').value
+            const password = document.getElementById('pass_in').value
+            this.$http.post('http://localhost:3000/api/users/credentials/', { email: email, password: password })
+                .then((results) => {
+                    if(results.body.length == 0){
+                        this.errMessageIn = true
+                    } else {
+                        this.errMessageIn = false
+                        console.log('login feito com sucesso')
+                        localStorage.setItem('email', email)
+                        this.$router.push('/')
+                    }
+
+                })
+                .catch(err => console.log(`ERRO: ${err.message}`))
+        },
+        signup() {
+            const email = document.getElementById('email_up').value
+            const pass = document.getElementById('pass_up').value
+            const passConfirm = document.getElementById('pass_up_confirm').value
+            
+            if(pass !== passConfirm){
+                this.errMessageUp = 'as senhas não coincidem!'
+                return
+            }
+
+            this.$http.post('http://localhost:3000/api/users/email/', { email: email })
+                .then(res => this.emailExists = res.body)
+                .catch(err => console.log(`ERRO: ${err.message}`))
+
+            if(this.emailExists.length){
+                console.log('não liberado')
+                this.errMessageUp = 'o email já está cadastrado!'
+                return
+            }
+
+            this.errMessageUp = ''
+
+            this.$http.post('http://localhost:3000/api/users/', { email: email, password: pass })
+                .then(() => {
+                    console.log('cadastro feito com sucesso')
+                    localStorage.setItem('email', email)
+                    this.$router.push('/')
+                })
+                .catch(err => console.log(`ERRO: ${err.message}`))
+        }
     }
 }
 </script>
@@ -81,6 +142,7 @@ export default {
         padding: .5em 1em;
         width: 30%;
         margin: 0 auto;
+        margin-top: 1.5em;
         text-transform: uppercase;
         background-color: #ccc;
         outline: none;
@@ -91,5 +153,8 @@ export default {
         background-color: #bcbcbc;
         transition: .4s;
     }
-
+    .error_message{
+        color: red;
+        text-align: center;
+    }
 </style>
