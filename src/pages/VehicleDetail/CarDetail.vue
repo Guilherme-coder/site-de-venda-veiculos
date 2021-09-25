@@ -4,7 +4,7 @@
         <div class="car">
             <div class="title_price">
                 <h1 class="title_vehicle">{{ this.car.brand }} {{ this.car.model }}</h1>
-                <h1 class="price_vehicle">R$ {{ this.car.price }},00</h1>
+                <h1 class="price_vehicle">R$ {{ this.car.price }}</h1>
             </div>
             <img class="picture" :src="this.car.picture" alt="foto do carro">
             
@@ -39,8 +39,9 @@ export default {
     },
 
     mounted() {
-        this.$http.get(`http://localhost:3000/api/carros/${this.id}`)
-            .then(res => this.car = res.body[0])
+        const token = localStorage.getItem('token')
+        this.$http.get(`http://localhost:3333/cars/${this.id}`, { headers: { 'Authorization': token } })
+            .then(res => this.car = res.body)
     },
 
     methods: {

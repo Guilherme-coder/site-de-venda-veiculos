@@ -4,7 +4,7 @@
         <div class="texts_vehicle">
             <div class="title_and_price">
                 <h4 class="title_vehicle">{{ this.brand }} {{ this.model }}</h4>
-                <p class="price_vehicle">R$ {{ this.price }},00</p>
+                <p class="price_vehicle">R$ {{ this.price }}</p>
             </div>
             <!-- <p class="description_vehicle"></p> -->
             <p class="engine_vehicle">{{ formatEngine() }}{{ formatCapacity() }}</p>
@@ -37,7 +37,7 @@ export default {
     },
     methods: {
         convertData(){
-            var hora = this.datas.substr(11, 2) - 3
+            var hora = this.datas.substr(11, 2)
             var dia = this.datas.substr(8, 2)
             if(hora < 0){
                 hora = 21 + Number(this.datas.substr(11, 2))

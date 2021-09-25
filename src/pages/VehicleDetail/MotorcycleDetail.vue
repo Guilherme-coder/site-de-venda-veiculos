@@ -4,7 +4,7 @@
         <div class="motorcycle">
             <div class="title_price">
                 <h1 class="title_vehicle">{{ this.motorcycle.brand }} {{ this.motorcycle.model }}</h1>
-                <h1 class="price_vehicle">R$ {{ this.motorcycle.price }},00</h1>
+                <h1 class="price_vehicle">R$ {{ this.motorcycle.price }}</h1>
             </div>
             <img class="picture" :src="this.motorcycle.picture" alt="foto da motocicleta">
             
@@ -39,8 +39,9 @@ export default {
     },
 
     mounted() {
-        this.$http.get(`http://localhost:3000/api/motocicletas/${this.id}`)
-            .then(res => this.motorcycle = res.body[0])
+        const token = localStorage.getItem('token')
+        this.$http.get(`http://localhost:3333/motorcycles/${this.id}`, { headers: { 'Authorization': token } })
+            .then(res => this.motorcycle = res.body)
     },
 
     methods: {

@@ -28,6 +28,7 @@ export default {
             return this.email.substr(0, indice)
         },
         logOut() {
+            localStorage.removeItem('token')
             localStorage.removeItem('email')
             this.email = null
             console.log('você fez logout');

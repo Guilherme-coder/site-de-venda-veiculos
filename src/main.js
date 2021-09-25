@@ -16,8 +16,8 @@ Vue.use(VueRouter)
 Vue.use(VueResource)
 
 const routes = [
-  { path: '/', component: Home },
-  { path: '/login', component: Login },
+  { path: '/', name: 'home', component: Home },
+  { path: '/login', name: 'login',component: Login },
   { path: '/anunciar', component: Advertise },
   { path: '/carros/:id', name: 'showCar', component: CarDetail },
   { path: '/veiculos/:id', name: 'showMotorcycle', component: MotorcycleDetail }
@@ -25,6 +25,15 @@ const routes = [
 
 const router = new VueRouter({
   routes
+})
+var isAuthenticated = false
+
+router.beforeEach((to, from, next) => {
+  if(localStorage.getItem('token')) isAuthenticated = true
+  else isAuthenticated = false
+  
+  if (to.name !== 'login' && !isAuthenticated) next({ name: 'login' })
+  else next()
 })
 
 new Vue({

@@ -10,7 +10,7 @@
                 <label class="login_label" for="pass_in">Senha </label>
                 <input required class="login_input" id="pass_in" type="password">
 
-                <p class="error_message" v-show="errMessageIn">Os dados estão incorretos, tente novamente.</p>
+                <p class="error_message" v-show="errMessageIn">{{ this.errMessageInDetail }}</p>
 
                 <button type="submit" class="login_button">Entre</button>
 
@@ -45,6 +45,7 @@ export default {
     data() {
         return {
             errMessageIn: false,
+            errMessageInDetail: '',
             errMessageUp: '',
             emailExists: ''
         }
@@ -56,19 +57,19 @@ export default {
         signin() {
             const email = document.getElementById('email_in').value
             const password = document.getElementById('pass_in').value
-            this.$http.post('http://localhost:3000/api/users/credentials/', { email: email, password: password })
+            this.$http.post('http://localhost:3333/login', { email: email, password: password })
                 .then((results) => {
-                    if(results.body.length == 0){
-                        this.errMessageIn = true
-                    } else {
-                        this.errMessageIn = false
-                        console.log('login feito com sucesso')
-                        localStorage.setItem('email', email)
-                        this.$router.push('/')
-                    }
+                    console.log('login feito com sucesso')
+                    localStorage.removeItem('token')
+                    localStorage.setItem('token', `Bearer ${results.body[0].token}`)
+                    localStorage.setItem('email', `${results.body[1].email}`)
+                    this.$router.push('/')
 
                 })
-                .catch(err => console.log(`ERRO: ${err.message}`))
+                .catch(err => {
+                    this.errMessageIn = true
+                    this.errMessageInDetail = err.body[0].message
+                })
         },
         signup() {
             const email = document.getElementById('email_up').value

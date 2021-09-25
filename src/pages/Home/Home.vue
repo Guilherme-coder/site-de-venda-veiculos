@@ -24,7 +24,7 @@
                     :year="vehicle.year"
                     :price="vehicle.price"
                     :engine="vehicle.engine"
-                    :datas="vehicle.data"
+                    :datas="vehicle.created_at"
                     :picture="vehicle.picture"></card-vehicle>
             </ul>
             <ul v-else-if="typeVehicle === 'motorcycles'">
@@ -37,7 +37,7 @@
                     :year="vehicle.year"
                     :price="vehicle.price"
                     :capacity="vehicle.capacity"
-                    :datas="vehicle.data"
+                    :datas="vehicle.created_at"
                     :picture="vehicle.picture"></card-vehicle>
             </ul>
       </div>
@@ -47,6 +47,7 @@
 <script>
 import MenuHeader from '../../components/MenuHeader/MenuHeader.vue';
 import CardVehicle from '../../components/CardVehicle/CardVehicle.vue';
+import axios from 'axios';
 
 export default {
     components: {
@@ -58,15 +59,21 @@ export default {
             vehicles: [],
             cars: [],
             motorcycles: [],
-            typeVehicle: localStorage.getItem('typeVehicle') || 'car'
+            typeVehicle: localStorage.getItem('typeVehicle') || 'cars'
         }
     },
     mounted() {
-        this.$http.get('http://localhost:3000/api/carros/')
+        const token = localStorage.getItem('token')
+        // this.$http.get('http://localhost:3333/cars/', { headers: { 'Authorization': token } })
+        //     .then(res => {
+        //         this.cars = res.body
+        //     })
+        axios.get('http://localhost:3333/cars/', { headers: { 'Authorization': token } })
             .then(res => {
-                this.cars = res.body
+                this.cars = res.data
+                console.log(res);
             })
-        this.$http.get('http://localhost:3000/api/motocicletas/')
+        this.$http.get('http://localhost:3333/motorcycles/', { headers: { 'Authorization': token } })
             .then(res => {
                 this.motorcycles = res.body
             })
