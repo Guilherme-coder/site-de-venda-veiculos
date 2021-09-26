@@ -57,7 +57,7 @@ export default {
         signin() {
             const email = document.getElementById('email_in').value
             const password = document.getElementById('pass_in').value
-            this.$http.post('http://localhost:3333/login', { email: email, password: password })
+            this.$http.post('https://adonisjs-vehicles.herokuapp.com/login', { email: email, password: password })
                 .then((results) => {
                     console.log('login feito com sucesso')
                     localStorage.removeItem('token')

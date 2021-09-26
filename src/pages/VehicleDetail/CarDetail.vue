@@ -40,7 +40,7 @@ export default {
 
     mounted() {
         const token = localStorage.getItem('token')
-        this.$http.get(`http://localhost:3333/cars/${this.id}`, { headers: { 'Authorization': token } })
+        this.$http.get(`https://adonisjs-vehicles.herokuapp.com/cars/${this.id}`, { headers: { 'Authorization': token } })
             .then(res => this.car = res.body)
     },
 

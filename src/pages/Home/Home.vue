@@ -64,16 +64,16 @@ export default {
     },
     mounted() {
         const token = localStorage.getItem('token')
-        // this.$http.get('http://localhost:3333/cars/', { headers: { 'Authorization': token } })
+        // this.$http.get('https://adonisjs-vehicles.herokuapp.com/cars/', { headers: { 'Authorization': token } })
         //     .then(res => {
         //         this.cars = res.body
         //     })
-        axios.get('http://localhost:3333/cars/', { headers: { 'Authorization': token } })
+        axios.get('https://adonisjs-vehicles.herokuapp.com/cars/', { headers: { 'Authorization': token } })
             .then(res => {
                 this.cars = res.data
                 console.log(res);
             })
-        this.$http.get('http://localhost:3333/motorcycles/', { headers: { 'Authorization': token } })
+        this.$http.get('https://adonisjs-vehicles.herokuapp.com/motorcycles/', { headers: { 'Authorization': token } })
             .then(res => {
                 this.motorcycles = res.body
             })
