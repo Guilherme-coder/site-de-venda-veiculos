@@ -37,7 +37,7 @@ export default {
     },
     methods: {
         convertData(){
-            var hora = this.datas.substr(11, 2)
+            var hora = this.datas.substr(11, 2) -3
             var dia = this.datas.substr(8, 2)
             if(hora < 0){
                 hora = 21 + Number(this.datas.substr(11, 2))

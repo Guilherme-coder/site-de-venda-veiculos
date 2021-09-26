@@ -84,7 +84,8 @@ export default {
     data() {
         return {
             typeVehicle: localStorage.getItem('typeVehicle'),
-            categoryMotorcycle: 'naked'
+            categoryMotorcycle: 'naked',
+            token: localStorage.getItem('token')
         }
     },
     components: {
@@ -120,7 +121,7 @@ export default {
                 picture: picturec
             }
             console.log(json);
-            this.$http.post('http://localhost:3000/api/carros/', json)
+            this.$http.post('https://adonisjs-vehicles.herokuapp.com/cars/', { headers: { 'Authorization': this.token }, body: json })
                 .then(() => console.log('Carro cadastrado com sucesso. '))
         },
         advertiseMotorcycle() {
@@ -151,7 +152,7 @@ export default {
                 picture: picturem
             }
             console.log(json);
-            this.$http.post('http://localhost:3000/api/motocicletas/', json)
+            this.$http.post('https://adonisjs-vehicles.herokuapp.com/motorcycles/', { headers: { 'Authorization': this.token }, body: json })
                 .then(() => console.log('Motocicleta cadastrada com sucesso.'))
         }
     }

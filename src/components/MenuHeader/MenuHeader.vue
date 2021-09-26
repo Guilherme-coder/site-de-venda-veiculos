@@ -32,6 +32,7 @@ export default {
             localStorage.removeItem('email')
             this.email = null
             console.log('você fez logout');
+            this.$router.push('/login')
         }
     }
 }
