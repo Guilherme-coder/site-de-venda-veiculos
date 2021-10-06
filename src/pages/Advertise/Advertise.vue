@@ -110,7 +110,7 @@ export default {
             const pricec = document.getElementById('price_car').value
             const picturec = document.getElementById('picture_car').value
 
-            const json = 
+            const json =
             {
                 brand: brandc,
                 model: modelc,
@@ -121,8 +121,12 @@ export default {
                 picture: picturec
             }
             console.log(json);
-            this.$http.post('https://adonisjs-vehicles.herokuapp.com/cars/', { headers: { 'Authorization': this.token }, body: json })
-                .then(() => console.log('Carro cadastrado com sucesso. '))
+            this.$http.post('https://adonisjs-vehicles.herokuapp.com/cars/', json)
+                .then(() => {
+                    console.log('Carro cadastrado com sucesso. ')
+                    this.$router.push({ name: 'home' })
+                    localStorage.setItem('typeVehicle', 'cars')
+                })
         },
         advertiseMotorcycle() {
             console.log('anunciar moto');
@@ -140,7 +144,7 @@ export default {
                 console.log(this.categoryMotorcycle);
             })
 
-            const json = 
+            const json =
             {
                 brand: brandm,
                 model: modelm,
@@ -152,8 +156,12 @@ export default {
                 picture: picturem
             }
             console.log(json);
-            this.$http.post('https://adonisjs-vehicles.herokuapp.com/motorcycles/', { headers: { 'Authorization': this.token }, body: json })
-                .then(() => console.log('Motocicleta cadastrada com sucesso.'))
+            this.$http.post('https://adonisjs-vehicles.herokuapp.com/motorcycles/', json )
+                .then(() => {
+                    console.log('Carro cadastrado com sucesso. ')
+                    this.$router.push({ name: 'home' })
+                    localStorage.setItem('typeVehicle', 'motorcycles')
+                })
         }
     }
 }
@@ -227,5 +235,5 @@ export default {
         cursor: pointer;
         background-color: #999;
         transition: .5s;
-    }   
+    }
 </style>

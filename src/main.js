@@ -13,7 +13,9 @@ import './assets/css/overwrite.css';
 
 Vue.config.productionTip = false
 Vue.use(VueRouter)
+
 Vue.use(VueResource)
+Vue.http.headers.common.Authorization = `${localStorage.getItem('token')}`
 
 const routes = [
   { path: '/', name: 'home', component: Home },
@@ -31,7 +33,7 @@ var isAuthenticated = false
 router.beforeEach((to, from, next) => {
   if(localStorage.getItem('token') != null) isAuthenticated = true
   else isAuthenticated = false
-  
+
   if (to.name !== 'login' && !isAuthenticated) next({ name: 'login' })
   else next()
 })
