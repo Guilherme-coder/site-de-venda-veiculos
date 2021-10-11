@@ -11,11 +11,15 @@ import MotorcycleDetail from './pages/VehicleDetail/MotorcycleDetail.vue';
 import './assets/css/reset.css';
 import './assets/css/overwrite.css';
 
+import store from './store/store'
+
 Vue.config.productionTip = false
 Vue.use(VueRouter)
 
 Vue.use(VueResource)
-Vue.http.headers.common.Authorization = `${localStorage.getItem('token')}`
+// store.state.username = localStorage.getItem('username')
+// store.state.token = localStorage.getItem('token')
+Vue.http.headers.common.Authorization = `Bearer ${store.getters.getToken}`
 
 const routes = [
   { path: '/', name: 'home', component: Home },
@@ -41,4 +45,5 @@ router.beforeEach((to, from, next) => {
 new Vue({
   router,
   render: h => h(App),
+  store
 }).$mount('#app')

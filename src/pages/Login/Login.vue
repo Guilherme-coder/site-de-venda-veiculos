@@ -2,38 +2,38 @@
     <div>
         <header-app/>
         <div class="box">
-            <form class="signin" @submit.prevent="signin()">
+            <form class="signin" @submit.prevent="login()">
                 <h2 class="title">Entre com suas credenciais</h2>
-                
-                <label class="login_label" for="email_in">Email </label>
-                <input required class="login_input" id="email_in" type="email">
-                
-                <label class="login_label" for="pass_in">Senha </label>
-                <input required class="login_input" id="pass_in" type="password">
 
-                <p class="error_message" v-show="errMessageIn">{{ this.errMessageInDetail }}</p>
+                <label class="login_label" for="email_in">Email </label>
+                <input v-model="loginForm.email" required class="login_input" id="email_in" type="email">
+
+                <label class="login_label" for="pass_in">Senha </label>
+                <input v-model="loginForm.password" required class="login_input" id="pass_in" type="password">
+
+                <p class="error_message" v-show="errMessageIn">{{ errMessageIn }}</p>
 
                 <button type="submit" class="login_button">Entre</button>
 
             </form>
 
-            <form class="signup" @submit.prevent="signup()">        
-                <h2 class="title">Cadastre-se, é rápido!</h2>        
+            <form class="signup" @submit.prevent="signup()">
+                <h2 class="title">Cadastre-se, é rápido!</h2>
                 <label class="login_label" for="username_in">Username </label>
-                <input required class="login_input" id="username_up" type="text">
-                
+                <input v-model="registerForm.username" required class="login_input" id="username_up" type="text">
+
                 <label class="login_label" for="email_up">Email </label>
-                <input required class="login_input" id="email_up" type="email">
-                
+                <input v-model="registerForm.email" required class="login_input" id="email_up" type="email">
+
                 <div class="passwords">
                     <label class="login_label" for="pass_up">Crie sua senha </label>
-                    <input required class="login_input" id="pass_up" type="password">
-                    
+                    <input v-model="registerForm.password" required class="login_input" id="pass_up" type="password">
+
                     <label class="login_label" for="pass_up_confirm">Confirme sua senha </label>
-                    <input required class="login_input" id="pass_up_confirm" type="password">
-                    
+                    <input v-model="registerForm.passwordConfirm" required class="login_input" id="pass_up_confirm" type="password">
+
                     <p class="error_message" v-show="errMessageUp">{{ errMessageUp }}</p>
-                    
+
                     <button type="submit" class="login_button">Cadastre-se</button>
                 </div>
             </form>
@@ -43,71 +43,66 @@
 
 <script>
 import MenuHeader from '../../components/MenuHeader/MenuHeader.vue'
-import axios from 'axios'
+import { mapActions } from 'vuex'
 
 
 export default {
     data() {
         return {
-            errMessageIn: false,
-            errMessageInDetail: '',
-            errMessageUp: '',
-            emailExists: ''
+            loginForm: {
+                email: '',
+                password: ''
+            },
+            registerForm: {
+                username: '',
+                email: '',
+                password: '',
+                passwordConfirm: ''
+            },
+            errMessageIn: '',
+            errMessageUp: ''
         }
     },
     components: {
         "header-app": MenuHeader
     },
     methods: {
-        signin() {
-            const email = document.getElementById('email_in').value
-            const password = document.getElementById('pass_in').value
-            this.$http.post('https://adonisjs-vehicles.herokuapp.com/login', { email: email, password: password })
-                .then((results) => {
-                    console.log('login feito com sucesso')
-                    localStorage.removeItem('token')
-                    localStorage.setItem('token', `Bearer ${results.body[0].token}`)
-                    localStorage.setItem('email', `${results.body[1].email}`)
-                    this.$router.push('/')
-
+        ...mapActions([
+            'doLogin',
+            'doSignup',
+            'doLogout'
+        ]),
+        async login() {
+            this.doLogin(this.loginForm)
+                .then(res => {
+                    console.log(res)
+                    this.errMessageIn = ''
+                    this.$router.push({ name: 'home' })
                 })
                 .catch(err => {
-                    this.errMessageIn = true
-                    this.errMessageInDetail = err.body[0].message
+                    if(err.message == 401) this.errMessageIn = 'Credenciais incorretas'
+                    else if(err.message == 500) this.errMessageIn = 'Tivemos um problema no servidor, contate o administrador'
+                    else this.errMessageIn = `Ouve um problema`
                 })
         },
-        signup() {
-            const username = document.getElementById('username_up').value
-            const email = document.getElementById('email_up').value
-            const pass = document.getElementById('pass_up').value
-            const passConfirm = document.getElementById('pass_up_confirm').value
-
-            let json = {
-                username,
-                email,
-                password: pass,
-            }
-            let newJson = []
-            
-            if(pass !== passConfirm){
-                this.errMessageUp = 'as senhas não coincidem!'
-                return
-            }
-
-            this.$http.post('https://adonisjs-vehicles.herokuapp.com/register', json)
+        async signup() {
+            await this.doSignup(this.registerForm)
                 .then(() => {
-                    newJson = {
-                        email,
-                        password: pass
-                    }
-                    axios.post('https://adonisjs-vehicles.herokuapp.com/login', newJson)
+                    this.errMessageUp = ''
+
+                    this.$router.push({ name: 'home' })
+                })
+                .catch(err => {
+                    console.error(err)
+                    if(err.message == 500) this.errMessageUp = 'Usuario já está cadastrado'
+
                 })
         }
     }
 }
 </script>
 
-<style scoped> 
+<style scoped>
     .box{
         display: flex;
         justify-content: space-around;

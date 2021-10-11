@@ -33,7 +33,7 @@
                     :id="vehicle.id"
                     :brand="vehicle.brand"
                     :model="vehicle.model"
-                    :category="vehicle.category" 
+                    :category="vehicle.category"
                     :year="vehicle.year"
                     :price="vehicle.price"
                     :capacity="vehicle.capacity"
@@ -47,7 +47,6 @@
 <script>
 import MenuHeader from '../../components/MenuHeader/MenuHeader.vue';
 import CardVehicle from '../../components/CardVehicle/CardVehicle.vue';
-import axios from 'axios';
 
 export default {
     components: {
@@ -63,17 +62,11 @@ export default {
         }
     },
     mounted() {
-        const token = localStorage.getItem('token')
-        // this.$http.get('https://adonisjs-vehicles.herokuapp.com/cars/', { headers: { 'Authorization': token } })
-        //     .then(res => {
-        //         this.cars = res.body
-        //     })
-        axios.get('https://adonisjs-vehicles.herokuapp.com/cars/', { headers: { 'Authorization': token } })
+        this.$http.get('https://adonisjs-vehicles.herokuapp.com/cars/')
             .then(res => {
                 this.cars = res.data
-                console.log(res);
             })
-        this.$http.get('https://adonisjs-vehicles.herokuapp.com/motorcycles/', { headers: { 'Authorization': token } })
+        this.$http.get('https://adonisjs-vehicles.herokuapp.com/motorcycles/')
             .then(res => {
                 this.motorcycles = res.body
             })

@@ -6,34 +6,36 @@
       <div>
           <ul class="items_header">
               <li class="item_header"><router-link class="link_header" to="/">Home</router-link></li>
-              
-              <li v-if="this.email" class="item_header" @click="logOut()">{{ showEmail() }}</li>
-              <li v-else class="item_header"><router-link class="link_header" to="/login">Login</router-link></li>
-              
+
+              <li v-show="getUser" class="item_header" @click="logOut()">{{ getUser }}</li>
+              <li v-show="!getUser" class="item_header"><router-link class="link_header" to="/login">Login</router-link></li>
+
           </ul>
       </div>
   </div>
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
+
 export default {
     data() {
         return{
-            email: localStorage.getItem('email') ? localStorage.getItem('email') : null
         }
     },
     methods: {
-        showEmail() {
-            const indice = this.email.indexOf('@')
-            return this.email.substr(0, indice)
-        },
+        ...mapActions([
+            'doLogout'
+        ]),
         logOut() {
-            localStorage.removeItem('token')
-            localStorage.removeItem('email')
-            this.email = null
-            console.log('você fez logout');
+            this.doLogout()
             this.$router.push('/login')
         }
+    },
+    computed: {
+        ...mapGetters([
+            'getUser'
+        ])
     }
 }
 </script>
@@ -75,5 +77,5 @@ export default {
     .link_header:hover{
         text-decoration: underline;
     }
-    
+
 </style>
