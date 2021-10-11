@@ -79,7 +79,6 @@ const actions = {
             })
     },
     doLogout: ({ commit }) => {
-        console.log('chegou aqui')
         localStorage.removeItem('username')
         localStorage.removeItem('token')
         Vue.http.headers.common.Authorization = ``

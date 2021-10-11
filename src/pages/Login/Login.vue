@@ -74,8 +74,7 @@ export default {
         ]),
         async login() {
             this.doLogin(this.loginForm)
-                .then(res => {
-                    console.log(res)
+                .then(() => {
                     this.errMessageIn = ''
                     this.$router.push({ name: 'home' })
                 })

@@ -7,7 +7,7 @@
                 <h1 class="price_vehicle">R$ {{ this.motorcycle.price }}</h1>
             </div>
             <img class="picture" :src="this.motorcycle.picture" alt="foto da motocicleta">
-            
+
             <div class="info">
                 <h3 class="title_description">Descrição:</h3>
                 <p class="description">{{ this.motorcycle.description || 'O anunciante não deu descrição da motocicleta :(' }}</p>
@@ -39,8 +39,7 @@ export default {
     },
 
     mounted() {
-        const token = localStorage.getItem('token')
-        this.$http.get(`https://adonisjs-vehicles.herokuapp.com/motorcycles/${this.id}`, { headers: { 'Authorization': token } })
+        this.$http.get(`https://adonisjs-vehicles.herokuapp.com/motorcycles/${this.id}`)
             .then(res => this.motorcycle = res.body)
     },
 

@@ -7,7 +7,7 @@
                 <h1 class="price_vehicle">R$ {{ this.car.price }}</h1>
             </div>
             <img class="picture" :src="this.car.picture" alt="foto do carro">
-            
+
             <div class="info">
                 <h3 class="title_description">Descrição:</h3>
                 <p class="description">{{ this.car.description || 'O anunciante não deu descrição do carro :(' }}</p>
@@ -39,9 +39,10 @@ export default {
     },
 
     mounted() {
-        const token = localStorage.getItem('token')
-        this.$http.get(`https://adonisjs-vehicles.herokuapp.com/cars/${this.id}`, { headers: { 'Authorization': token } })
-            .then(res => this.car = res.body)
+        this.$http.get(`https://adonisjs-vehicles.herokuapp.com/cars/${this.id}`)
+            .then(res => {
+                this.car = res.body
+            })
     },
 
     methods: {
