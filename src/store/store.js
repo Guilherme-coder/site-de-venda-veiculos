@@ -62,9 +62,19 @@ const actions = {
                 commit('LOGIN', res.data[0].token)
                 localStorage.setItem('token', getters.getToken)
                 Vue.http.headers.common.Authorization = `Bearer ${getters.getToken}`
+                axios.defaults.headers.common['Authorization'] = `Bearer ${getters.getToken}`
             })
             .catch((err) => {
                 console.log(err)
+                throw new Error(err.response.status)
+            })
+
+        await axios.get('https://adonisjs-vehicles.herokuapp.com/load_session')
+            .then((res) => {
+                commit('SETUSER', res.data.username)
+                localStorage.setItem('username', getters.getUser)
+            })
+            .catch((err) => {
                 throw new Error(err.response.status)
             })
     },

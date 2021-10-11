@@ -93,9 +93,8 @@ export default {
                     this.$router.push({ name: 'home' })
                 })
                 .catch(err => {
-                    console.error(err)
                     if(err.message == 500) this.errMessageUp = 'Usuario já está cadastrado'
-
+                    else this.errMessageUp = err.message
                 })
         }
     }
