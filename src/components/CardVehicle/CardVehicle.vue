@@ -37,7 +37,7 @@ export default {
     },
     methods: {
         convertData(){
-            var hora = this.datas.substr(11, 2) -3
+            var hora = this.datas.substr(11, 2)
             var dia = this.datas.substr(8, 2)
             if(hora < 0){
                 hora = 21 + Number(this.datas.substr(11, 2))
@@ -46,7 +46,7 @@ export default {
                     dia = `0${dia}`
                 }
             }
-            return `${dia}/${this.datas.substr(5, 2)}/${this.datas.substr(0, 4)} às ${hora}h${this.datas.substr(14, 2)}`;        
+            return `${dia}/${this.datas.substr(5, 2)}/${this.datas.substr(0, 4)} às ${hora}h${this.datas.substr(14, 2)}`;
         },
         formatEngine(){
             if(this.engine){

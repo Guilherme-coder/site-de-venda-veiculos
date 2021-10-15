@@ -6,7 +6,9 @@
                 <h1 class="title_vehicle">{{ this.motorcycle.brand }} {{ this.motorcycle.model }}</h1>
                 <h1 class="price_vehicle">R$ {{ this.motorcycle.price }}</h1>
             </div>
-            <img class="picture" :src="this.motorcycle.picture" alt="foto da motocicleta">
+            <picture-card v-for="picture in this.images" :key="picture"
+                :picture="picture"
+            ></picture-card>
 
             <div class="info">
                 <h3 class="title_description">Descrição:</h3>
@@ -25,22 +27,33 @@
 
 <script>
 import MenuHeader from '../../components/MenuHeader/MenuHeader.vue'
+import CardPicture from '../../components/CardPicture/CardPicture.vue'
 
 export default {
     components: {
-        'header-app': MenuHeader
+        'header-app': MenuHeader,
+        'picture-card': CardPicture
     },
 
     data(){
         return{
             id: this.$route.params.id,
-            motorcycle: []
+            motorcycle: [],
+            images: []
         }
     },
 
     mounted() {
         this.$http.get(`https://adonisjs-vehicles.herokuapp.com/motorcycles/${this.id}`)
-            .then(res => this.motorcycle = res.body)
+            .then(res => {
+                this.motorcycle = res.body
+                this.motorcycle.picture_one ? this.images.push(this.motorcycle.picture_one) : null
+                this.motorcycle.picture_two ? this.images.push(this.motorcycle.picture_two) : null
+                this.motorcycle.picture_three ? this.images.push(this.motorcycle.picture_three) : null
+                this.motorcycle.picture_four ? this.images.push(this.motorcycle.picture_four) : null
+                this.motorcycle.picture_five ? this.images.push(this.motorcycle.picture_five) : null
+                this.motorcycle.picture_six ? this.images.push(this.motorcycle.picture_six) : null
+            })
     },
 
     methods: {
