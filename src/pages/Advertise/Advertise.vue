@@ -37,7 +37,7 @@
                 <input class="input_advertise" id="price_car" type="number" placeholder="Ex: 28000">
 
                 <label class="label_advertise" for="picture_car">Nos mande uma foto: </label>
-                <input class="button_image" type="file" multiple ref="filescar">
+                <input class="button_image" type="file" multiple  accept="image/*" ref="filescar">
 
                 <button class="button_advertise" type="submit">Anunciar</button>
             </form>
@@ -70,8 +70,8 @@
                 <input class="input_advertise" id="price_motorcycle" type="number" placeholder="Ex: 35000">
 
                 <label class="label_advertise" for="picture_motorcycle">Nos mande uma foto: </label>
-                <input class="button_image" type="file" multiple ref="files">
-                <p v-for="image in this.images" :key="image.name">{{ image }}</p>
+                <input class="button_image" type="file" multiple  accept="image/*" ref="files">
+                <!-- <p v-for="image in this.images" :key="image.name">{{ image }}</p> -->
 
                 <button class="button_advertise" type="submit">Anunciar</button>
             </form>
