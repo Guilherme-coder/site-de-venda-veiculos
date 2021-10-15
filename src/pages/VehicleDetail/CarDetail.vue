@@ -6,7 +6,9 @@
                 <h1 class="title_vehicle">{{ this.car.brand }} {{ this.car.model }}</h1>
                 <h1 class="price_vehicle">R$ {{ this.car.price }}</h1>
             </div>
-            <img class="picture" :src="this.car.picture" alt="foto do carro">
+            <picture-card v-for="picture in this.images" :key="picture"
+                :picture="picture"
+            ></picture-card>
 
             <div class="info">
                 <h3 class="title_description">Descrição:</h3>
@@ -25,16 +27,19 @@
 
 <script>
 import MenuHeader from '../../components/MenuHeader/MenuHeader.vue'
+import CardPicture from '../../components/CardPicture/CardPicture.vue'
 
 export default {
     components: {
-        'header-app': MenuHeader
+        'header-app': MenuHeader,
+        'picture-card': CardPicture
     },
 
     data(){
         return{
             id: this.$route.params.id,
-            car: []
+            car: [],
+            images: []
         }
     },
 
@@ -42,6 +47,12 @@ export default {
         this.$http.get(`https://adonisjs-vehicles.herokuapp.com/cars/${this.id}`)
             .then(res => {
                 this.car = res.body
+                this.car.picture_one ? this.images.push(this.car.picture_one) : null
+                this.car.picture_two ? this.images.push(this.car.picture_two) : null
+                this.car.picture_three ? this.images.push(this.car.picture_three) : null
+                this.car.picture_four ? this.images.push(this.car.picture_four) : null
+                this.car.picture_five ? this.images.push(this.car.picture_five) : null
+                this.car.picture_six ? this.images.push(this.car.picture_six) : null
             })
     },
 

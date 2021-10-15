@@ -37,7 +37,7 @@
                 <input class="input_advertise" id="price_car" type="number" placeholder="Ex: 28000">
 
                 <label class="label_advertise" for="picture_car">Nos mande uma foto: </label>
-                <input class="input_advertise" id="picture_car" type="text" placeholder="Ex: https://cdn.salaodocarro.com.br/_upload/carros/2019/02/06/kia-picanto-2013-marrom-177595-0.jpg">
+                <input class="button_image" type="file" multiple ref="filescar">
 
                 <button class="button_advertise" type="submit">Anunciar</button>
             </form>
@@ -70,7 +70,9 @@
                 <input class="input_advertise" id="price_motorcycle" type="number" placeholder="Ex: 35000">
 
                 <label class="label_advertise" for="picture_motorcycle">Nos mande uma foto: </label>
-                <input class="input_advertise" id="picture_motorcycle" type="text" placeholder="Ex: https://http2.mlstatic.com/D_NQ_NP_820250-MLB43119116032_082020-O.jpg">
+                <input class="button_image" type="file" multiple ref="files">
+                <p v-for="image in this.images" :key="image.name">{{ image }}</p>
+
                 <button class="button_advertise" type="submit">Anunciar</button>
             </form>
         </div>
@@ -79,13 +81,16 @@
 
 <script>
 import MenuHeader from '../../components/MenuHeader/MenuHeader.vue'
+import image from '@/scripts/image'
+import Swal from 'sweetalert2'
 
 export default {
     data() {
         return {
             typeVehicle: localStorage.getItem('typeVehicle'),
             categoryMotorcycle: 'naked',
-            token: localStorage.getItem('token')
+            token: localStorage.getItem('token'),
+            images: []
         }
     },
     components: {
@@ -100,7 +105,25 @@ export default {
         select.value = this.typeVehicle
     },
     methods: {
-        advertiseCar() {
+        async advertiseCar() {
+            var picturesCar = this.$refs.filescar.files
+            var arrayPicturesCar = []
+
+            arrayPicturesCar = await image.exec(picturesCar)
+
+            this.images = arrayPicturesCar
+
+            if(arrayPicturesCar.length > 3) {
+                Swal.fire({
+                    title: 'Oops!',
+                    text: 'Só é permitido adicionar até 3 fotos',
+                    icon: 'warning',
+                    confirmButtonText: 'Ok'
+                })
+                picturesCar = null
+                return
+            }
+
             console.log('anunciar carro');
             const brandc = document.getElementById('brand_car').value
             const modelc = document.getElementById('model_car').value
@@ -108,7 +131,6 @@ export default {
             const enginec = document.getElementById('engine_car').value
             const yearc = document.getElementById('year_car').value
             const pricec = document.getElementById('price_car').value
-            const picturec = document.getElementById('picture_car').value
 
             const json =
             {
@@ -118,9 +140,13 @@ export default {
                 engine: Number(enginec),
                 year: Number(yearc),
                 price: Number(pricec),
-                picture: picturec
+                picture_one: arrayPicturesCar[0],
+                picture_two: arrayPicturesCar[1],
+                picture_three: arrayPicturesCar[2],
+                picture_four: arrayPicturesCar[3],
+                picture_five: arrayPicturesCar[4],
+                picture_six: arrayPicturesCar[5]
             }
-            console.log(json);
             this.$http.post('https://adonisjs-vehicles.herokuapp.com/cars/', json)
                 .then(() => {
                     console.log('Carro cadastrado com sucesso. ')
@@ -128,7 +154,23 @@ export default {
                     localStorage.setItem('typeVehicle', 'cars')
                 })
         },
-        advertiseMotorcycle() {
+        async advertiseMotorcycle(){
+            var pictures = this.$refs.files.files
+            var arrayPictures = []
+
+            arrayPictures = await image.exec(pictures)
+
+            if(arrayPictures.length > 3) {
+                Swal.fire({
+                    title: 'Oops!',
+                    text: 'Só é permitido adicionar até 3 fotos',
+                    icon: 'warning',
+                    confirmButtonText: 'Ok'
+                })
+                pictures = null
+                return
+            }
+
             console.log('anunciar moto');
             const brandm = document.getElementById('brand_motorcycle').value
             const modelm = document.getElementById('model_motorcycle').value
@@ -136,7 +178,6 @@ export default {
             const capacitym = document.getElementById('capacity_motorcycle').value
             const yearm = document.getElementById('year_motorcycle').value
             const pricem = document.getElementById('price_motorcycle').value
-            const picturem = document.getElementById('picture_motorcycle').value
 
             var typeMoto = document.getElementById('category_motorcycle');
             typeMoto.addEventListener('change', () => {
@@ -153,14 +194,19 @@ export default {
                 capacity: Number(capacitym),
                 year: Number(yearm),
                 price: Number(pricem),
-                picture: picturem
+                picture_one: arrayPictures[0],
+                picture_two: arrayPictures[1],
+                picture_three: arrayPictures[2],
+                picture_four: arrayPictures[3],
+                picture_five: arrayPictures[4],
+                picture_six: arrayPictures[5]
             }
-            console.log(json);
             this.$http.post('https://adonisjs-vehicles.herokuapp.com/motorcycles/', json )
                 .then(() => {
                     console.log('Carro cadastrado com sucesso. ')
-                    this.$router.push({ name: 'home' })
                     localStorage.setItem('typeVehicle', 'motorcycles')
+
+                    this.$router.push('/')
                 })
         }
     }
@@ -232,6 +278,22 @@ export default {
         transition: .5s;
     }
     .button_advertise:hover{
+        cursor: pointer;
+        background-color: #999;
+        transition: .5s;
+    }
+    .button_image{
+        display: block;
+        margin-top: 1em;
+        padding: .5em;
+        width: 25%;
+        padding: 1em;
+        background-color: #aaa;
+        border-radius: 5px;
+        font-size: .9em;
+        transition: .5s;
+    }
+    .button_image:hover{
         cursor: pointer;
         background-color: #999;
         transition: .5s;

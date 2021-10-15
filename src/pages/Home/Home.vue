@@ -25,7 +25,7 @@
                     :price="vehicle.price"
                     :engine="vehicle.engine"
                     :datas="vehicle.created_at"
-                    :picture="vehicle.picture"></card-vehicle>
+                    :picture="vehicle.picture_one"></card-vehicle>
             </ul>
             <ul v-else-if="typeVehicle === 'motorcycles'">
                 <card-vehicle v-for="vehicle in motorcycles" :key="vehicle.picture"
@@ -38,7 +38,7 @@
                     :price="vehicle.price"
                     :capacity="vehicle.capacity"
                     :datas="vehicle.created_at"
-                    :picture="vehicle.picture"></card-vehicle>
+                    :picture="vehicle.picture_one"></card-vehicle>
             </ul>
       </div>
   </div>
